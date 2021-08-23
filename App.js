@@ -1,21 +1,72 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+import React from "react";
+import HomeScreen from "./screens/Home";
+import RecommendedMoviesScreen from "./screens/Recommendation";
+import PopularMoviesScreen from "./screens/Popular";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import { createMaterialTopTabNavigator } from "react-navigation-tabs";
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AppContainer/>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const AppTopNavigtor = createMaterialTopTabNavigator({
+  RecommendedMovies: {
+    screen: RecommendedMoviesScreen,
+    navigationOptions:{
+      tabBarLabel: "Recommended Movies",
+      tabBarOptions: {
+        tabStyle: {backgroundColor: "white"},
+        labelStyle: {color:"#000"},
+        indicatorStyle: {backgroundColor: "black"}
+      }
+    }
   },
-});
+
+  PopularMovies: {
+    screen: PopularMoviesScreen,
+    navigationOptions: {
+      tabBarLabel: "Popular Movies",
+      tabBarOptions: {
+        tabStyle: {backgroundColor: "white"},
+        labelStyle: {color:"#000"},
+        indicatorStyle: {backgroundColor: "black"}
+      }
+    }
+  }
+})
+
+const AppStackNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      headerShown: false
+    }
+  },
+
+  AppTopNav: {
+    screen: AppTopNavigtor,
+    navigationOptions: {
+      headerBackTitle: null,
+      headerTintColor: "#fff",
+      headerTitle: "Recommended Movies",
+      headerStyle: {backgroundColor: "#b500f9"},
+      headerTitleStyle: {color: "white" , fontWeight: "bold" , fontSize: RFValue(18)}
+    }
+  }
+},
+{
+  initialRouteName: "Home"
+}
+)
+
+const AppContainer = createAppContainer(AppStackNavigator)
+
+
+
+
+
